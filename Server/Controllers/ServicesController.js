@@ -31,22 +31,27 @@ const getService = async (req, res) => {
 // POST a new service
 const createService = async (req, res) => {
   try {
-    console.log('Received service data:', req.body);
-    
+    console.log("Received service data:", req.body);
+
     // Check for required fields
-    if (!req.body.serviceName || !req.body.howDidYouKnow || !req.body.dateOfVisit || !req.body.attendingStaff) {
-      return res.status(400).json({ 
-        error: 'Missing required fields' 
+    if (
+      !req.body.serviceName ||
+      !req.body.howDidYouKnow ||
+      !req.body.dateOfVisit ||
+      !req.body.attendingStaff
+    ) {
+      return res.status(400).json({
+        error: "Missing required fields",
       });
     }
 
     const service = await Service.create(req.body);
     res.status(201).json(service);
   } catch (error) {
-    console.error('Error creating service:', error);
-    res.status(400).json({ 
+    console.error("Error creating service:", error);
+    res.status(400).json({
       error: error.message,
-      details: error.errors 
+      details: error.errors,
     });
   }
 };

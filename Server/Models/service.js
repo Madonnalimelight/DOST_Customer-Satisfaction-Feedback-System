@@ -36,7 +36,7 @@ const servicesSchema = new mongoose.Schema({
     validate: {
       validator: function (value) {
         if (!value) return true; // Skip validation if subService is not required
-        
+
         const validSubServices = {
           "Technology Transfer & Commercialization": [
             "Food Processing",
@@ -49,7 +49,13 @@ const servicesSchema = new mongoose.Schema({
             "ICT",
             "Others",
           ],
-          "Technology Consultancy": ["MPEX", "CAPE", "CPT", "Energy Audit", "Others"],
+          "Technology Consultancy": [
+            "MPEX",
+            "CAPE",
+            "CPT",
+            "Energy Audit",
+            "Others",
+          ],
         };
 
         return validSubServices[this.serviceName]?.includes(value);

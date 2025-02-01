@@ -12,7 +12,9 @@ const Landingpage = () => {
         <div className="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <img src={dostlogo} alt="DOST Logo" className="h-8 w-8" />
-            <span className="text-[#0066cc] font-semibold">DOST Marinduque</span>
+            <span className="text-[#0066cc] font-semibold">
+              DOST Marinduque
+            </span>
           </div>
           <button className="px-6 py-1 text-[#0066cc] rounded-full border border-[#0066cc] hover:bg-blue-50 transition-colors">
             About us
@@ -24,8 +26,12 @@ const Landingpage = () => {
       <header className="bg-[#1a237e] text-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between py-3">
-            <img src={dostlogo} alt="DOST MIMAROPA Logo" className="h-24 w-24" />
-            
+            <img
+              src={dostlogo}
+              alt="DOST MIMAROPA Logo"
+              className="h-24 w-24"
+            />
+
             <div className="flex flex-col items-center text-center">
               <h1 className="text-2xl md:text-3xl font-bold tracking-wide">
                 DEPARTMENT OF SCIENCE AND TECHNOLOGY
@@ -34,7 +40,7 @@ const Landingpage = () => {
                 MIMAROPA REGION
               </h2>
             </div>
-            
+
             <img src={iso} alt="ISO Certification" className="h-24 w-24" />
           </div>
         </div>
@@ -53,20 +59,21 @@ const Landingpage = () => {
           </div>
 
           <p className="text-lg text-gray-700 max-w-2xl mx-auto leading-relaxed">
-            Please take a moment to complete this short survey. Your responses will remain 
-            confidential and are greatly appreciated. We look forward to hearing from you.
+            Please take a moment to complete this short survey. Your responses
+            will remain confidential and are greatly appreciated. We look
+            forward to hearing from you.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
-              to="/service"
+              to="/serviceslist"
               className="inline-flex items-center justify-center px-8 py-3 bg-[#1a237e] text-white rounded-md
                        hover:bg-blue-900 transition-all duration-300 gap-2 text-lg"
             >
               Get Started
               <ArrowRight className="w-5 h-5" />
             </Link>
-            
+
             <Link
               to="/learn-more"
               className="inline-flex items-center justify-center px-8 py-3 border-2 border-[#1a237e] 
@@ -87,7 +94,9 @@ const Landingpage = () => {
             <div>
               <h3 className="text-xl font-bold mb-4">Contact Us</h3>
               <address className="not-italic space-y-2">
-                <p>DOST-MIMAROPA Regional Office, Calapan City, Oriental Mindoro</p>
+                <p>
+                  DOST-MIMAROPA Regional Office, Calapan City, Oriental Mindoro
+                </p>
                 <p>(043) 288-5654</p>
                 <p>mimaropa@region.dost.gov.ph</p>
               </address>
@@ -97,10 +106,38 @@ const Landingpage = () => {
             <div>
               <h3 className="text-xl font-bold mb-4">Quick Links</h3>
               <ul className="space-y-2">
-                <li><Link to="/about" className="hover:text-blue-200 transition-colors">About Us</Link></li>
-                <li><Link to="/services" className="hover:text-blue-200 transition-colors">Our Services</Link></li>
-                <li><Link to="/programs" className="hover:text-blue-200 transition-colors">Programs</Link></li>
-                <li><Link to="/contact" className="hover:text-blue-200 transition-colors">Contact</Link></li>
+                <li>
+                  <Link
+                    to="/about"
+                    className="hover:text-blue-200 transition-colors"
+                  >
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/services"
+                    className="hover:text-blue-200 transition-colors"
+                  >
+                    Our Services
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/programs"
+                    className="hover:text-blue-200 transition-colors"
+                  >
+                    Programs
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/contact"
+                    className="hover:text-blue-200 transition-colors"
+                  >
+                    Contact
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -108,10 +145,22 @@ const Landingpage = () => {
             <div>
               <h3 className="text-xl font-bold mb-4">Connect With Us</h3>
               <div className="flex gap-4">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
-                   className="text-white hover:text-blue-200 transition-colors">Facebook</a>
-                <a href="https://region4b.dost.gov.ph" target="_blank" rel="noopener noreferrer"
-                   className="text-white hover:text-blue-200 transition-colors">Website</a>
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-blue-200 transition-colors"
+                >
+                  Facebook
+                </a>
+                <a
+                  href="https://region4b.dost.gov.ph"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white hover:text-blue-200 transition-colors"
+                >
+                  Website
+                </a>
               </div>
             </div>
           </div>

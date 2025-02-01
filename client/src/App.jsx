@@ -9,6 +9,7 @@ import FeedbackEvaluation from "./pages/FeedbackEvaluation";
 import LibraryUserForm from "./pages/LibraryUserForm";
 import Services from "./pages/Services";
 import AdminDashboard from "./pages/AdminDashboard";
+import ServicesList from "./pages/Serviceslist";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/feedback" element={<FeedbackEvaluation />} />
           <Route path="/services" element={<Services />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/serviceslist" element={<ServicesList />} />
         </Routes>
       </BrowserRouter>
     </div>
