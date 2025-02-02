@@ -66,7 +66,7 @@ const Landingpage = () => {
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
-              to="/Service"
+              to="/Customerprofile"
               className="inline-flex items-center justify-center px-8 py-3 bg-[#1a237e] text-white rounded-md
                        hover:bg-blue-900 transition-all duration-300 gap-2 text-lg"
             >

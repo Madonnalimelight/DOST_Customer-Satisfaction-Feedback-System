@@ -15,7 +15,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Landingpage/>}/>
-          <Route path="/Service" element={<ServiceForm/>}/>
+          <Route path="/Serviceslist" element={<ServiceForm/>}/>
           <Route path="/Customerprofile" element={<CustomerProfile/>}/>
           <Route path="/Feedback" element={<FeedbackEvaluation/>}/>
           <Route path="/libraryuser" element={<Libraryuser/>}/>

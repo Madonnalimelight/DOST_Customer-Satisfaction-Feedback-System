@@ -55,7 +55,9 @@ const CustomerProfile = ({ onChange, onProfileSelect }) => {
         onProfileSelect(response.data._id);
       }
 
-      navigate("/Feedback");
+      navigate("/Serviceslist", { 
+        state: { customerProfileId: response.data._id } 
+      });
 
       setFormData({
         name: "",

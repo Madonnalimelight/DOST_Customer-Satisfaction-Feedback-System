@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const servicesSchema = new mongoose.Schema({
   customerProfile: {
     type: mongoose.Schema.Types.ObjectId,

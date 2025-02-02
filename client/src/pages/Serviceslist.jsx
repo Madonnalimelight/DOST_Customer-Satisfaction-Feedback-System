@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import CustomerProfile from "./CustomerProfile";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const ServiceForm = () => {
+  const location = useLocation();
+  const customerProfileId = location.state?.customerProfileId; // Ensure this is correctly set
+
   const [formData, setFormData] = useState({
     serviceName: "",
     otherService: "",
@@ -17,7 +19,6 @@ const ServiceForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
-  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const ServiceForm = () => {
       try {
         const response = await axios.get("http://localhost:3000/api/services");
         if (Array.isArray(response.data)) {
-          setServices(response.data);
+          // Handle the fetched services if needed
         } else {
           setError("Unexpected response format");
         }
@@ -97,15 +98,14 @@ const ServiceForm = () => {
     setIsSubmitting(true);
 
     try {
-      // Prepare the data based on conditions
       const submitData = {
+        customerProfile: customerProfileId, // Ensure this is included
         serviceName: formData.serviceName,
         howDidYouKnow: formData.howDidYouKnow,
         dateOfVisit: formData.dateOfVisit,
         attendingStaff: formData.attendingStaff,
       };
 
-      // Add conditional fields
       if (formData.serviceName === "Others") {
         submitData.otherService = formData.otherService;
       }
@@ -127,20 +127,27 @@ const ServiceForm = () => {
         submitData
       );
 
-      setSuccessMessage("Service request submitted successfully!");
-      // Reset form after successful submission
-      setFormData({
-        serviceName: "",
-        otherService: "",
-        subService: "",
-        otherSubService: "",
-        howDidYouKnow: "",
-        dateOfVisit: "",
-        attendingStaff: "",
-      });
+      // Check if the response is successful
+      if (response.status === 201) {
+        setSuccessMessage("Service request submitted successfully!");
 
-      // Navigate to the next page after successful submission
-      navigate("/Customerprofile");
+        // Reset form after successful submission
+        setFormData({
+          serviceName: "",
+          otherService: "",
+          subService: "",
+          otherSubService: "",
+          howDidYouKnow: "",
+          dateOfVisit: "",
+          attendingStaff: "",
+        });
+
+        // Navigate to the CustomerProfile after successful submission
+        navigate("/Feedback");
+      } else {
+        setError("Failed to submit the service request.");
+      }
+
     } catch (err) {
       setError(
         err.response?.data?.message ||
@@ -300,7 +307,7 @@ const ServiceForm = () => {
           disabled={isSubmitting}
           className={`w-full py-2 px-4 rounded-md transition-colors ${
             isSubmitting
-              ? "bg-blue-400 cursor-not-allowed"
+              ? "bg-black text-white cursor-not-allowed"
               : "bg-blue-600 hover:bg-blue-700"
           } text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
         >

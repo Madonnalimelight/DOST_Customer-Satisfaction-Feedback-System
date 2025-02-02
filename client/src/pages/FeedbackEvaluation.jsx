@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
+import LibraryUserForm from './LibraryUserForm';
 
 
 const EmojiRating = ({ name, value, onChange, isSelected }) => {
@@ -80,6 +81,7 @@ const CustomerEvaluationForm = () => {
     helpUsImprove: "",
   });
 
+  const [isLibraryUser, setIsLibraryUser] = useState(null);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
@@ -118,6 +120,10 @@ const CustomerEvaluationForm = () => {
       console.error('Error details:', error.response?.data || error.message);
       setError('Error submitting evaluation. Please try again.');
     }
+  };
+
+  const handleLibraryUserChange = (value) => {
+    setIsLibraryUser(value);
   };
 
   const evaluationFields = [
@@ -191,6 +197,34 @@ const CustomerEvaluationForm = () => {
           </div>
         )}
 
+        <div className="mb-4">
+          <label className="block mb-2">Are you a library user?</label>
+          <div className="flex items-center">
+            <label className="mr-4">
+              <input
+                type="radio"
+                name="libraryUser"
+                value="yes"
+                onChange={() => handleLibraryUserChange(true)}
+                className="mr-1"
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="libraryUser"
+                value="no"
+                onChange={() => handleLibraryUserChange(false)}
+                className="mr-1"
+              />
+              No
+            </label>
+          </div>
+        </div>
+
+        {isLibraryUser === true && <LibraryUserForm />}
+
         <div className="space-y-8">
           {evaluationFields.map((field) => (
             <div key={field.name} className="space-y-4">
@@ -236,6 +270,20 @@ const CustomerEvaluationForm = () => {
           </button>
         </div>
       </form>
+
+      {isLibraryUser === false && (
+        <div className="mt-6">
+          <h3 className="text-lg font-bold">Summary of Your Answers:</h3>
+          <p>Speed and Timeliness: {formData.speedAndTimeliness}</p>
+          <p>Quality of Service: {formData.qualityOfService}</p>
+          <p>Relevance of Service: {formData.relevanceOfService}</p>
+          <p>Staff Competence: {formData.staffCompetence}</p>
+          <p>Staff Attitude: {formData.staffAttitude}</p>
+          <p>Overall Perception: {formData.overallPerception}</p>
+          <p>Likelihood to Recommend: {formData.likelihoodScore}</p>
+          <p>Help Us Improve: {formData.helpUsImprove}</p>
+        </div>
+      )}
     </div>
   );
 };
