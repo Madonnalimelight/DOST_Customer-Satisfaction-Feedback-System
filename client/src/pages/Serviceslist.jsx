@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import CustomerProfile from "./CustomerProfile";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ServiceForm = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +17,10 @@ const ServiceForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const serviceNames = [
     "Technology Needs Assessment",
@@ -44,6 +50,25 @@ const ServiceForm = () => {
     ],
     "Technology Consultancy": ["MPEX", "CAPE", "CPT", "Energy Audit", "Others"],
   };
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/services");
+        if (Array.isArray(response.data)) {
+          setServices(response.data);
+        } else {
+          setError("Unexpected response format");
+        }
+      } catch (err) {
+        setError("Failed to fetch services");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   const handleChange = (field, value) => {
     setError(null);
@@ -113,6 +138,9 @@ const ServiceForm = () => {
         dateOfVisit: "",
         attendingStaff: "",
       });
+
+      // Navigate to the next page after successful submission
+      navigate("/Customerprofile");
     } catch (err) {
       setError(
         err.response?.data?.message ||
@@ -122,6 +150,9 @@ const ServiceForm = () => {
       setIsSubmitting(false);
     }
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="w-full max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-6">
@@ -146,6 +177,34 @@ const ServiceForm = () => {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Attending Staff */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Attending Staff *
+          </label>
+          <input
+            type="text"
+            value={formData.attendingStaff}
+            onChange={(e) => handleChange("attendingStaff", e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 border"
+            required
+          />
+        </div>
+
+        {/* Date of Visit */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">
+            Date of Visit *
+          </label>
+          <input
+            type="date"
+            value={formData.dateOfVisit}
+            onChange={(e) => handleChange("dateOfVisit", e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 border"
+            required
+          />
+        </div>
+
         {/* Service Name */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700">
@@ -231,34 +290,6 @@ const ServiceForm = () => {
             type="text"
             value={formData.howDidYouKnow}
             onChange={(e) => handleChange("howDidYouKnow", e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 border"
-            required
-          />
-        </div>
-
-        {/* Date of Visit */}
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Date of Visit *
-          </label>
-          <input
-            type="date"
-            value={formData.dateOfVisit}
-            onChange={(e) => handleChange("dateOfVisit", e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 border"
-            required
-          />
-        </div>
-
-        {/* Attending Staff */}
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            Attending Staff *
-          </label>
-          <input
-            type="text"
-            value={formData.attendingStaff}
-            onChange={(e) => handleChange("attendingStaff", e.target.value)}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2 border"
             required
           />

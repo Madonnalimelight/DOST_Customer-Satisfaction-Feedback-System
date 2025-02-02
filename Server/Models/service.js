@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const servicesSchema = new mongoose.Schema({
+  customerProfile: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'CustomerProfile',
+    required: true
+  },
   serviceName: {
     type: String,
     enum: [
@@ -84,6 +89,9 @@ const servicesSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+// Add an index to improve query performance
+servicesSchema.index({ customerProfile: 1, dateOfVisit: -1 });
 
 // Create a model from the schema
 const Service = mongoose.model("Service", servicesSchema);

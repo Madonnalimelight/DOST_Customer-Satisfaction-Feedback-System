@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   User,
   Building,
@@ -9,7 +10,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 
-const CustomerProfileForm = () => {
+const CustomerProfile = ({ onChange, onProfileSelect }) => {
   const [formData, setFormData] = useState({
     name: "",
     institution: "",
@@ -25,19 +26,23 @@ const CustomerProfileForm = () => {
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
+  const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    if (onChange) {
+      onChange({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+    setIsSubmitting(true);
 
     try {
       const response = await axios.post(
@@ -45,7 +50,13 @@ const CustomerProfileForm = () => {
         formData
       );
       setSuccess("Profile created successfully!");
-      console.log("Profile created:", response.data);
+
+      if (onProfileSelect) {
+        onProfileSelect(response.data._id);
+      }
+
+      navigate("/Feedback");
+
       setFormData({
         name: "",
         institution: "",
@@ -64,6 +75,8 @@ const CustomerProfileForm = () => {
           error.message
       );
       console.error("Error creating profile:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -111,7 +124,7 @@ const CustomerProfileForm = () => {
                         type="text"
                         name="name"
                         value={formData.name}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         required
                         className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Enter your name"
@@ -131,7 +144,7 @@ const CustomerProfileForm = () => {
                         type="text"
                         name="institution"
                         value={formData.institution}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         required
                         className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Enter organization name"
@@ -151,7 +164,7 @@ const CustomerProfileForm = () => {
                         type="text"
                         name="address"
                         value={formData.address}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         required
                         className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Enter your address"
@@ -171,7 +184,7 @@ const CustomerProfileForm = () => {
                         type="text"
                         name="contact"
                         value={formData.contact}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         required
                         className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Tel No. / Email"
@@ -188,7 +201,7 @@ const CustomerProfileForm = () => {
                         type="checkbox"
                         name="firstVisit"
                         checked={formData.firstVisit}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                       />
                       <label className="text-sm font-medium text-gray-700">
@@ -203,7 +216,7 @@ const CustomerProfileForm = () => {
                       <select
                         name="gender"
                         value={formData.gender}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       >
@@ -220,7 +233,7 @@ const CustomerProfileForm = () => {
                       <select
                         name="age"
                         value={formData.age}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       >
@@ -242,7 +255,7 @@ const CustomerProfileForm = () => {
                       <select
                         name="classification"
                         value={formData.classification}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       >
@@ -274,7 +287,7 @@ const CustomerProfileForm = () => {
                           type="checkbox"
                           name="withDisability"
                           checked={formData.withDisability}
-                          onChange={handleChange}
+                          onChange={handleInputChange}
                           className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                         />
                         <label className="text-sm font-medium text-gray-700">
@@ -290,7 +303,7 @@ const CustomerProfileForm = () => {
                       <select
                         name="educationLevel"
                         value={formData.educationLevel}
-                        onChange={handleChange}
+                        onChange={handleInputChange}
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       >
@@ -308,9 +321,14 @@ const CustomerProfileForm = () => {
 
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition-all duration-200 flex items-center justify-center"
+                disabled={isSubmitting}
+                className={`w-full py-2 px-4 rounded-md transition-colors ${
+                  isSubmitting
+                    ? "bg-blue-400 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700"
+                } text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
               >
-                Submit Profile
+                {isSubmitting ? "Submitting..." : "Submit Profile"}
               </button>
             </form>
           </div>
@@ -320,4 +338,4 @@ const CustomerProfileForm = () => {
   );
 };
 
-export default CustomerProfileForm;
+export default CustomerProfile;

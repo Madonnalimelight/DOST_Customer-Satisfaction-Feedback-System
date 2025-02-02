@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 
+
 const EmojiRating = ({ name, value, onChange, isSelected }) => {
   const getEmoji = (rating) => {
     switch (rating) {
